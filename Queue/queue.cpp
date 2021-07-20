@@ -12,7 +12,7 @@ class Queue
 public:
     Queue(int qsize = 5)
     {
-        queue = vector<int>(qsize);
+        queue = vector<T>(qsize);
         front = rear = -1;
         this->qsize = qsize;
     }
