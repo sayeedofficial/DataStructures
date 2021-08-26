@@ -1,105 +1,48 @@
-#include <iostream>
-
-using namespace std;
- 
-class CircularQueue{
-private:
-    int size;
-    int front;
-    int rear;
-    int* Q;
+class MyCircularQueue {
+    int *arr;
+    int front,rear,size,capacity;
 public:
-    CircularQueue(int size);
-    ~CircularQueue();
-    bool isFull();
-    bool isEmpty();
-    void enqueue(int x);
-    int dequeue();
-    void display();
-};
- 
-CircularQueue::CircularQueue(int size) {
-    this->size = size;
-    front = 0;
-    rear = 0;
-    Q = new int [size];
-}
- 
-CircularQueue::~CircularQueue() {
-    delete [] Q;
-}
- 
-bool CircularQueue::isEmpty() {
-    if (front == rear){
-        return true;
+    MyCircularQueue(int k) {
+        front = 0,rear=-1;
+        size = 0;
+        capacity = k;
+        arr = new int[k];
     }
-    return false;
-}
- 
-bool CircularQueue::isFull() {
-    if ((rear + 1) % size == front){
-        return true;
-    }
-    return false;
-}
- 
-void CircularQueue::enqueue(int x) {
-    if (isFull()){
-        cout << "Queue Overflow" << endl;
-    } else {
-        rear = (rear + 1) % size;
-        Q[rear] = x;
-    }
-}
- 
-int CircularQueue::dequeue() {
-    int x = -1;
-    if (isEmpty()){
-        cout << "Queue Underflow" << endl;
-    } else {
-        front = (front + 1) % size;
-        x = Q[front];
-    }
-    return x;
-}
- 
-void CircularQueue::display() {
-    int i = front + 1;
-    do {
-        cout << Q[i] << flush;
-        if (i < rear) {
-            cout << " <- " << flush;
+    
+    bool enQueue(int value) {
+        if(isFull()){
+            return false;
         }
-        i = (i + 1) % size;
-    } while (i != (rear + 1) % size);
-}
- 
- 
-int main() {
- 
-    int A[] = {1, 3, 5, 7, 9};
- 
-    CircularQueue cq(sizeof(A)/sizeof(A[0]) + 1);
- 
-    // Enqueue
-    for (int i=0; i<sizeof(A)/sizeof(A[0]); i++){
-        cq.enqueue(A[i]);
+        rear = (rear +1)%capacity;
+        arr[rear] = value;
+        size++;
+        return true;
+        
     }
- 
-    // Display
-    cq.display();
-    cout << endl;
- 
-    // Overflow
-    cq.enqueue(10);
- 
-    // Dequeue
-    for (int i=0; i<sizeof(A)/sizeof(A[0]); i++){
-        cq.dequeue();
+    
+    bool deQueue() {
+        if(isEmpty()){
+            return false;
+        }
+        front = (front  + 1)%capacity;
+        size--;
+        return true;
+        
     }
- 
-    // Underflow
-    cq.dequeue();
- 
-    return 0;
-}
+    
+    int Front() {
+        return isEmpty() ? -1 : arr[front];
+    }
+    
+    int Rear() {
+         return isEmpty() ? -1 : arr[rear];
+    }
+    
+    bool isEmpty() {
+        return size==0;
+    }
+    
+    bool isFull() {
+        return size==capacity;
+    }
+};
